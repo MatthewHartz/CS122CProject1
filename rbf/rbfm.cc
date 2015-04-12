@@ -1,5 +1,6 @@
 
 #include "rbfm.h"
+#include <cstring>
 
 RecordBasedFileManager* RecordBasedFileManager::_rbf_manager = 0;
 
@@ -93,7 +94,7 @@ RC RecordBasedFileManager::insertRecord(FileHandle &fileHandle, const vector<Att
 
 		// insert record into free space else collapse records and try again
 		int directorySpace = 8 + (8 * numRecords); // 8 for the meta data of the directory and 8 for each record
-		if (freeSpaceOffset + recordLength < PAGE_SIZE - directorySpace) {		
+		if (freeSpaceOffset + recordLength < PAGE_SIZE - (directorySpace + 8)) {		
 			// update page with record
 			memcpy((char*)pageData + freeSpaceOffset, data, recordLength);
 
@@ -145,6 +146,10 @@ RC RecordBasedFileManager::insertRecord(FileHandle &fileHandle, const vector<Att
 	memcpy((char *)temp + (NUM_ENTRIES - 4), &recordLength, sizeof(int)); // update length of record
 
 	fileHandle.appendPage(temp);
+
+	// update RID
+	rid.pageNum = fileHandle.getNumberOfPages() - 1;
+	rid.slotNum = numRecords - 1;
 	free(temp);
 
 	return 0;

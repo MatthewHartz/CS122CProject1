@@ -50,7 +50,6 @@ RC RecordBasedFileManager::insertRecord(FileHandle &fileHandle, const vector<Att
 
 	int fieldCount = recordDescriptor.size();
 	int nullCount = ceil((double)fieldCount / CHAR_BIT);
-	char* charStr = (char*)data;
 
 	// Get data length
 	int recordLength = nullCount; // initialize the record's length to compensate for the null chunk
@@ -176,10 +175,8 @@ RC RecordBasedFileManager::printRecord(const vector<Attribute> &recordDescriptor
 	// TODO: Handle nulls
 	char *nullsIndicator = (char *)malloc(nullCount);
 	memcpy(nullsIndicator, (char*)data + offset, nullCount);
-	char blah = nullsIndicator[0];
-	offset += nullCount;
 
-	int fieldNumber = 0; // increase this once a field has been iterated over
+	offset += nullCount;
 
 	for (int i = 0; i < fieldCount; i++) {
 		//buffer += recordDescriptor[i].name;

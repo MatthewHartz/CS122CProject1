@@ -48,8 +48,6 @@ RC RecordBasedFileManager::insertRecord(FileHandle &fileHandle, const vector<Att
 		free(temp);
 	}
 
-	
-
 	int fieldCount = recordDescriptor.size();
 	int nullCount = ceil((double)fieldCount / CHAR_BIT);
 	char* charStr = (char*)data;
@@ -75,11 +73,10 @@ RC RecordBasedFileManager::insertRecord(FileHandle &fileHandle, const vector<Att
 	}
 	
 	// Get page number
-	int pageNumber = 0;
-	int numPagesInFile = fileHandle.getNumberOfPages();
+	int pageNumber = fileHandle.getNumberOfPages() - 1;
 
 	// Iterate through pages to find empty slot
-	while (pageNumber < numPagesInFile) {
+	while (pageNumber >= 0) {
 		// Read page
 		void* pageData = malloc(PAGE_SIZE);
 		if (fileHandle.readPage(pageNumber, pageData) != 0) {
@@ -125,7 +122,7 @@ RC RecordBasedFileManager::insertRecord(FileHandle &fileHandle, const vector<Att
 		}
 		
 		free(pageData);
-		pageNumber++;
+		pageNumber--;
 	}
 
 	// Could not be appending to any pages currently loaded in file, therefore append new page

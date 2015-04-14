@@ -258,7 +258,3 @@ RC RecordBasedFileManager::printRecord(const vector<Attribute> &recordDescriptor
 	free(nullsIndicator);
 	return 0;
 }
-
-void RecordBasedFileManager::insertRecordHelper() {
-
-}

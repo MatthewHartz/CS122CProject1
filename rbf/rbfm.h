@@ -134,7 +134,6 @@ protected:
 
 private:
   static RecordBasedFileManager *_rbf_manager;
-  void insertRecordHelper();
 };
 
 class DirectoryEntry{

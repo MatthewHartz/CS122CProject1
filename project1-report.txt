@@ -1,0 +1,17 @@
+Paged File Manager Class
+- This class is used to open/close/create/delete a file.  It is also used to print out FileHandle
+statistics, read a complete page, and write a complete page. 
+
+Record Based File Manager Class
+- This class has the same open/close/create/delete functions, but simply calls the Paged File Manager
+class to handle these interactions.  From there it also has insert/read/print record functions. 
+
+- Print simply iterates through the data, and prints out the attribute and its respective value.
+
+- Read will navigate to the correct page, the using the page's directory, find the correct record
+using the offset in the directory.
+
+- Insert is a little more complicated than these two functions.  Insert will attempt to insert a record
+from the last page, and if it cannot insert it into the last page, it will go backwards towards the front page
+until it is possibly able to insert it into a page.  If unable to insert into a page, a new page will be appended
+to the file, with this newly inserted record.
